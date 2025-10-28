@@ -1,0 +1,624 @@
+prompts
+اولش چون دیپ سیک یگ مدل زبانی متنی هست ازش میخوام برای best practice کردنش بهم یک پرامپت بهتر بده 
+این پروژه درس مهندسی نرم افزار منه میخواستم برای best practice کردن این پروژه یک پرامپت بسازی برام 
+""" طراحی و پیاده سازی سیستم مدیریت کتابخانه دانشگاه
+در کتابخانه دانشگاه اطلاعات کتاب ها توسط یکی از 3 کارمند کتابخانه در سیستم ثبت می شود. دانشجویان با مراجعه به این سیستم پس از جستجو و پیدا کردن  کتاب مورد نظر خود می توانند کتاب را به امانت ببرند. مدیر کتابخانه می تواند گزارش های مختلفی از اطلاعات امانات بر اساس دانشجو، کتاب و کارمند داشته باشد.
+در ادامه نیازمندی های سیستم به تفکیک کاربران سیستم دقیق تر مشخص شده است.
+
+1- دانشجو:
+1-1 ثبت نام در سیستم و مشخص کردن نام کاربری و کلمه ورود
+1-2 ورود به سیستم
+1-3 جستجوی کتاب بر اساس ترکیبی از مقادیر عنوان کتاب و یا سال نشر و یا نام نویسنده و مشاهده اطلاعات کتاب و وضعیت امانت کتاب (موجود هست یا خیر)
+1-4 ثبت درخواست امانت کتاب بر اساس بازه زمانی شامل زمان شروع و زمان پایان
+
+2- کاربر مهمان:
+2-1 مشاهده تعداد دانشجویان ثبت نام کرده 
+2-2 جستجو فقط بر اساس نام کتاب و مشاهده نتایج جستجو صرفا شامل اطلاعات کتاب
+2-3 مشاهده اطلاعات آماری ساده شامل تعداد کل دانشجویان، تعداد کل کتاب ها، تعداد کل امانت ها، تعداد آخرین کتاب هایی که در امانت هستند
+
+3- کارمند کتابخانه:
+3-1 ورود به سیستم (ثبت نام کارمند توسط مدیر کتابخانه انجام می شود)
+3-2 امکان تغییر رمز عبور
+3-3 ثبت اطلاعات کتاب
+3-4 جستجو و ویرایش اطلاعات کتاب
+3-5 بررسی و تایید درخواست امانت کتاب که تاریخ شروع آنها برای همان روز یا روز قبل هست (بعد از تایید درخواست دانشجو میتواند با مراجعه به کتابخانه کتاب مورد درخواست خود را امانت ببرد) 
+3-6 مشاهده گزارش تاریخچه امانات یک دانشجو به همراه اطلاعات آمارای شامل تعداد کل امانات، تعداد کل کتاب های تحویل داده نشد، تعداد کل امانت هایی که توسط دانشجو با تاخیر تحویل داده شده اند.
+3-7 فعال و غیر فعال کردن دانشجو (دانشجوی غیر فعال امکان به امانت بردن کتاب را ندارد و دانشجویان به صورت پیشفرض با ثبت نام در سیستم به صورت فعال هستند)
+3-8 دریافت کتاب به امانت برده شده و ثبت زمان دریافت کتاب
+
+4- مدیر سیستم:
+4-1 تعریف کارمند کتابخانه شامل نام کاربری و رمز عبور
+4-2 مشاهده عملکرد کارمند شامل تعداد اطلاعات کتاب هایی که ثبت کرده، تعداد کل کتاب هایی که به امانت داده، تعداد کل کتاب هایی که تحویل گرفته
+4-3 مشاهده اطلاعات آماری امانات کتاب شامل تعداد درخواست های امانت ثبت شده، تعداد کل امانت داده شده، میانگین تعداد روزهایی که کتاب به امانت برده شده (میانگین زمان دریافت و برگرداندن کتاب)
+4-4 مشاهده اطلاعات آماری دانشجویان همه موارد 3-6 به همراه لیست 10 دانشجوی بابیشترین تاخیر در تحویل کتاب
+
+در  این نسخه صرفا باید قابلیت برنامه تحت command line با چاپ منو هایی برای مهمان، دانشجو، کارمند و مدیر قابلیت ها ذکر شده را ارائه نماید.
+در این نسخه اطلاعات در فایل یا پایگاه داده ذخیره نمی شود. """
+
+دیپ سیک این پرامپت و ساختار کد هارو داد بهم 
+پرامپت برای سیستم مدیریت کتابخانه دانشگاه
+دستورالعمل کلی برای مدل
+شما یک دستیار برنامه‌نویس متخصص در طراحی سیستم‌های جاوا هستید. لطفا یک سیستم مدیریت کتابخانه دانشگاه بر اساس نیازمندی‌های ارائه شده پیاده‌سازی کن. سیستم باید از best practiceهای جاوا پیروی کند و قابلیت‌های زیر را داشته باشد:
+
+ساختار کلی سیستم
+java
+// Prompt: طراحی یک سیستم مدیریت کتابخانه دانشگاه با معماری لایه‌ای
+// شامل لایه‌های: مدل‌ها، سرویس‌ها، کنترلرها و منوها
+// پیاده‌سازی بدون دیتابیس با استفاده از Collections برای ذخیره داده
+
+/**
+ * سیستم مدیریت کتابخانه دانشگاه
+ * 
+ * ویژگی‌های کلیدی:
+ * - معماری چند لایه‌ای
+ * - مدیریت کاربران (دانشجو، کارمند، مدیر)
+ * - مدیریت کتاب‌ها و امانت
+ * - سیستم گزارش‌گیری پیشرفته
+ * - رابط خط فرمان (CLI)
+ */
+
+// لطفا کدهای زیر را بر اساس best practiceهای جاوا پیاده‌سازی کن
+مدل‌های داده (Models)
+java
+// Prompt: پیاده‌سازی مدل‌های داده با encapsulation مناسب
+// استفاده از Lombok-style patterns (بدون وابستگی به کتابخانه خارجی)
+
+/**
+ * مدل کاربر پایه
+ */
+public abstract class User {
+    private String username;
+    private String password;
+    private boolean active;
+    
+    // constructor, getters, setters
+}
+
+/**
+ * مدل دانشجو
+ */
+public class Student extends User {
+    private String studentId;
+    private String fullName;
+    private LocalDate registrationDate;
+    // statistics fields
+    private int totalBorrows;
+    private int delayedReturns;
+    private int notReturnedCount;
+    
+    // constructor, getters, setters
+}
+
+/**
+ * مدل کارمند
+ */
+public class Employee extends User {
+    private String employeeId;
+    private String fullName;
+    private LocalDate hireDate;
+    // performance metrics
+    private int booksRegistered;
+    private int booksLent;
+    private int booksReceived;
+    
+    // constructor, getters, setters
+}
+
+/**
+ * مدل کتاب
+ */
+public class Book {
+    private String bookId;
+    private String title;
+    private String author;
+    private int publicationYear;
+    private String isbn;
+    private boolean available;
+    private LocalDate registrationDate;
+    private String registeredBy; // employee username
+    
+    // constructor, getters, setters
+}
+
+/**
+ * مدل درخواست امانت
+ */
+public class BorrowRequest {
+    private String requestId;
+    private String studentUsername;
+    private String bookId;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private RequestStatus status;
+    private LocalDate requestDate;
+    
+    // constructor, getters, setters
+}
+
+/**
+ * مدل سابقه امانت
+ */
+public class BorrowRecord {
+    private String recordId;
+    private String studentUsername;
+    private String bookId;
+    private String employeeUsername; // who processed
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+    private boolean returned;
+    private boolean delayed;
+    
+    // constructor, getters, setters
+}
+
+/**
+ * enum وضعیت‌ها
+ */
+public enum RequestStatus {
+    PENDING, APPROVED, REJECTED
+}
+سرویس‌ها (Services)
+java
+// Prompt: پیاده‌سازی سرویس‌های business logic با separation of concerns
+// استفاده از Singleton pattern برای مدیریت state
+
+/**
+ * سرویس مدیریت کاربران
+ */
+public class UserService {
+    private static UserService instance;
+    private Map<String, User> users;
+    private Map<String, Student> students;
+    private Map<String, Employee> employees;
+    
+    // singleton pattern
+    public static UserService getInstance() {
+        if (instance == null) {
+            instance = new UserService();
+        }
+        return instance;
+    }
+    
+    // student methods
+    public boolean registerStudent(String username, String password, String fullName, String studentId) {
+        // implementation
+    }
+    
+    public Student loginStudent(String username, String password) {
+        // implementation
+    }
+    
+    // employee methods
+    public boolean addEmployee(String username, String password, String fullName, String employeeId) {
+        // implementation
+    }
+    
+    public Employee loginEmployee(String username, String password) {
+        // implementation
+    }
+    
+    // utility methods
+    public boolean toggleStudentStatus(String username) {
+        // implementation
+    }
+    
+    public int getTotalStudentsCount() {
+        // implementation
+    }
+}
+
+/**
+ * سرویس مدیریت کتاب‌ها
+ */
+public class BookService {
+    private static BookService instance;
+    private Map<String, Book> books;
+    
+    public static BookService getInstance() {
+        if (instance == null) {
+            instance = new BookService();
+        }
+        return instance;
+    }
+    
+    public boolean addBook(Book book, String employeeUsername) {
+        // implementation
+    }
+    
+    public boolean updateBook(String bookId, Book updatedBook) {
+        // implementation
+    }
+    
+    public List<Book> searchBooks(String title, String author, Integer publicationYear) {
+        // implementation with flexible search
+    }
+    
+    public List<Book> searchBooksByTitle(String title) {
+        // implementation for guest users
+    }
+    
+    public Book findBookById(String bookId) {
+        // implementation
+    }
+}
+
+/**
+ * سرویس مدیریت امانت
+ */
+public class BorrowService {
+    private static BorrowService instance;
+    private Map<String, BorrowRequest> borrowRequests;
+    private Map<String, BorrowRecord> borrowRecords;
+    private Queue<BorrowRequest> pendingRequests;
+    
+    public static BorrowService getInstance() {
+        if (instance == null) {
+            instance = new BorrowService();
+        }
+        return instance;
+    }
+    
+    public boolean requestBorrow(String studentUsername, String bookId, 
+                                LocalDate startDate, LocalDate endDate) {
+        // implementation
+    }
+    
+    public List<BorrowRequest> getPendingRequestsForToday() {
+        // implementation - requests with start date today or before
+    }
+    
+    public boolean approveBorrowRequest(String requestId, String employeeUsername) {
+        // implementation
+    }
+    
+    public boolean returnBook(String recordId, String employeeUsername) {
+        // implementation
+    }
+}
+
+/**
+ * سرویس گزارش‌گیری
+ */
+public class ReportService {
+    private static ReportService instance;
+    
+    public static ReportService getInstance() {
+        if (instance == null) {
+            instance = new ReportService();
+        }
+        return instance;
+    }
+    
+    // student reports
+    public StudentStatistics getStudentStatistics(String studentUsername) {
+        // implementation
+    }
+    
+    public List<BorrowRecord> getStudentBorrowHistory(String studentUsername) {
+        // implementation
+    }
+    
+    // employee performance reports
+    public EmployeePerformance getEmployeePerformance(String employeeUsername) {
+        // implementation
+    }
+    
+    // library statistics
+    public LibraryStatistics getLibraryStatistics() {
+        // implementation
+    }
+    
+    // top 10 students with most delays
+    public List<StudentDelayStats> getTopStudentsWithDelays() {
+        // implementation
+    }
+}
+کنترلرها (Controllers)
+java
+// Prompt: پیاده‌سازی کنترلرها برای جداسازی منطق رابط کاربر از business logic
+
+/**
+ * کنترلر مدیریت دانشجو
+ */
+public class StudentController {
+    private Student currentStudent;
+    private BookService bookService;
+    private BorrowService borrowService;
+    private ReportService reportService;
+    
+    public boolean login(String username, String password) {
+        // implementation
+    }
+    
+    public boolean register(String username, String password, String fullName, String studentId) {
+        // implementation
+    }
+    
+    public List<Book> searchBooks(String title, String author, Integer year) {
+        // implementation
+    }
+    
+    public boolean requestBookBorrow(String bookId, LocalDate startDate, LocalDate endDate) {
+        // implementation
+    }
+}
+
+/**
+ * کنترلر مدیریت کارمند
+ */
+public class EmployeeController {
+    private Employee currentEmployee;
+    private BookService bookService;
+    private BorrowService borrowService;
+    private UserService userService;
+    private ReportService reportService;
+    
+    public boolean login(String username, String password) {
+        // implementation
+    }
+    
+    public boolean changePassword(String newPassword) {
+        // implementation
+    }
+    
+    public boolean addBook(Book book) {
+        // implementation
+    }
+    
+    public boolean updateBook(String bookId, Book updatedBook) {
+        // implementation
+    }
+    
+    public List<BorrowRequest> getTodayPendingRequests() {
+        // implementation
+    }
+    
+    public boolean processBorrowRequest(String requestId) {
+        // implementation
+    }
+    
+    public boolean receiveReturnedBook(String recordId) {
+        // implementation
+    }
+    
+    public boolean toggleStudentStatus(String studentUsername) {
+        // implementation
+    }
+}
+
+/**
+ * کنترلر مدیریت مهمان
+ */
+public class GuestController {
+    private UserService userService;
+    private BookService bookService;
+    private ReportService reportService;
+    
+    public int getRegisteredStudentsCount() {
+        // implementation
+    }
+    
+    public List<Book> searchBooksByTitle(String title) {
+        // implementation
+    }
+    
+    public SimpleStatistics getSimpleStatistics() {
+        // implementation
+    }
+}
+
+/**
+ * کنترلر مدیریت مدیر
+ */
+public class ManagerController {
+    private UserService userService;
+    private ReportService reportService;
+    
+    public boolean addEmployee(String username, String password, String fullName, String employeeId) {
+        // implementation
+    }
+    
+    public EmployeePerformance getEmployeePerformance(String employeeUsername) {
+        // implementation
+    }
+    
+    public BorrowStatistics getBorrowStatistics() {
+        // implementation
+    }
+    
+    public List<StudentDelayStats> getTopDelayedStudents() {
+        // implementation
+    }
+}
+منوها (Menus) - رابط خط فرمان
+java
+// Prompt: پیاده‌سازی منوهای تعاملی با قابلیت navigations مناسب
+
+/**
+ * منوی اصلی
+ */
+public class MainMenu {
+    public void show() {
+        while (true) {
+            System.out.println("\n=== سیستم مدیریت کتابخانه دانشگاه ===");
+            System.out.println("1. ورود به عنوان مهمان");
+            System.out.println("2. ورود به عنوان دانشجو");
+            System.out.println("3. ورود به عنوان کارمند");
+            System.out.println("4. ورود به عنوان مدیر");
+            System.out.println("0. خروج");
+            
+            int choice = readIntInput("لطفا گزینه مورد نظر را انتخاب کنید: ");
+            
+            switch (choice) {
+                case 1:
+                    new GuestMenu().show();
+                    break;
+                case 2:
+                    new StudentMenu().show();
+                    break;
+                case 3:
+                    new EmployeeMenu().show();
+                    break;
+                case 4:
+                    new ManagerMenu().show();
+                    break;
+                case 0:
+                    System.out.println("خروج از سیستم...");
+                    return;
+                default:
+                    System.out.println("گزینه نامعتبر!");
+            }
+        }
+    }
+}
+
+/**
+ * منوی دانشجو
+ */
+public class StudentMenu {
+    private StudentController controller;
+    
+    public void show() {
+        // login/register first
+        if (!authenticate()) {
+            return;
+        }
+        
+        while (true) {
+            System.out.println("\n=== منوی دانشجو ===");
+            System.out.println("1. جستجوی کتاب");
+            System.out.println("2. درخواست امانت کتاب");
+            System.out.println("3. مشاهده تاریخچه امانت");
+            System.out.println("0. خروج");
+            
+            int choice = readIntInput("لطفا گزینه مورد نظر را انتخاب کنید: ");
+            
+            switch (choice) {
+                case 1:
+                    searchBooks();
+                    break;
+                case 2:
+                    requestBorrow();
+                    break;
+                case 3:
+                    showBorrowHistory();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("گزینه نامعتبر!");
+            }
+        }
+    }
+    
+    private boolean authenticate() {
+        // implementation for login/register
+    }
+    
+    private void searchBooks() {
+        // implementation
+    }
+    
+    private void requestBorrow() {
+        // implementation
+    }
+    
+    private void showBorrowHistory() {
+        // implementation
+    }
+}
+
+// پیاده‌سازی مشابه برای EmployeeMenu, GuestMenu, ManagerMenu
+کلاس اصلی برنامه
+java
+// Prompt: پیاده‌سازی کلاس اصلی با initializer مناسب
+
+/**
+ * کلاس اصلی برنامه
+ */
+public class LibraryManagementSystem {
+    
+    public static void main(String[] args) {
+        // Initialize sample data for testing
+        initializeSampleData();
+        
+        // Start the application
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.show();
+    }
+    
+    private static void initializeSampleData() {
+        // Initialize with some sample data for testing
+        UserService userService = UserService.getInstance();
+        BookService bookService = BookService.getInstance();
+        
+        // Add sample employees
+        userService.addEmployee("admin", "admin123", "مدیر سیستم", "EMP001");
+        userService.addEmployee("emp1", "emp123", "کارمند یک", "EMP002");
+        
+        // Add sample students
+        userService.registerStudent("stu1", "stu123", "دانشجو یک", "STU001");
+        userService.registerStudent("stu2", "stu123", "دانشجو دو", "STU002");
+        
+        // Add sample books
+        Book book1 = new Book("B001", "طراحی الگوریتم", "جان هاپکروفت", 2006, "ISBN001", true);
+        Book book2 = new Book("B002", "پایگاه داده", "راماکریشنان", 2002, "ISBN002", true);
+        
+        bookService.addBook(book1, "emp1");
+        bookService.addBook(book2, "emp1");
+    }
+}
+utility methods
+java
+// Prompt: پیاده‌سازی utility methods برای input handling و تاریخ
+
+/**
+ * کلاس کمکی برای utility methods
+ */
+public class InputUtils {
+    private static Scanner scanner = new Scanner(System.in);
+    
+    public static int readIntInput(String prompt) {
+        System.out.print(prompt);
+        try {
+            return scanner.nextInt();
+        } catch (Exception e) {
+            scanner.nextLine(); // clear buffer
+            return -1;
+        }
+    }
+    
+    public static String readStringInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+    
+    public static LocalDate readDateInput(String prompt) {
+        System.out.print(prompt + " (YYYY-MM-DD): ");
+        String dateStr = scanner.nextLine().trim();
+        try {
+            return LocalDate.parse(dateStr);
+        } catch (Exception e) {
+            System.out.println("فرمت تاریخ نامعتبر!");
+            return null;
+        }
+    }
+}
+
+/**
+ * کلاس utility برای تاریخ
+ */
+public class DateUtils {
+    public static boolean isDateInPastOrToday(LocalDate date) {
+        return !date.isAfter(LocalDate.now());
+    }
+    
+    public static boolean isDateInFuture(LocalDate date) {
+        return date.isAfter(LocalDate.now());
+    }
+    
+    public static long getDaysBetween(LocalDate start, LocalDate end) {
+        return ChronoUnit.DAYS.between(start, end);
+    }
+}
